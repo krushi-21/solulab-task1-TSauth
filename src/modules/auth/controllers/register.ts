@@ -8,7 +8,7 @@ export default async function Register(
 ): Promise<Response | void> {
   try {
     //get user data
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     //check user is already exist or not
     const user = await User.findOne({ email });
     if (user) {
@@ -20,6 +20,7 @@ export default async function Register(
     const newUser = await User.create({
       email,
       password,
+      role,
     });
     //send error if user is not created
     if (!newUser) res.status(404).send('Something went wrong please try again');

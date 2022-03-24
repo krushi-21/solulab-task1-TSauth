@@ -2,6 +2,7 @@ import express, { application, Request, Response } from 'express';
 import { connect } from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
+import { rateLimit } from 'express-rate-limit';
 import { AppRoutes } from './modules/routes';
 import 'dotenv/config';
 
@@ -21,6 +22,7 @@ class App {
   express(): express.Application {
     return this.app;
   }
+
   //Configuration  for all middlewares
   private middleware(): void {
     this.app.use(cors());
@@ -42,7 +44,13 @@ class App {
 
   //register all the routes
   private async registerRoutes(): Promise<void> {
-    this.app.use('/api/v1', AppRoutes);
+    //rate limit for ip adderess
+    const limiter = rateLimit({
+      max: 100,
+      windowMs: 60 * 60 * 1000,
+      message: 'to many request from this ip',
+    });
+    this.app.use('/api/v1', limiter, AppRoutes);
 
     //this will return 404 route
     this.app.use((req: Request, res: Response) => {

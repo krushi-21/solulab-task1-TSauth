@@ -7,9 +7,9 @@ export const createToken = (id: string): string => {
   });
 };
 
-// export const verifyToken = (token: string): boolean => {
-//   jwt.verify(token, process.env.JWT_SECRET as jwt.Secret, (err, payload) => {
-//     if (err) return false;
-//   });
-//   return true;
-// };
+export const verifyToken = (token: string) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET as jwt.Secret);
+  } catch (error) {}
+  return null;
+};
