@@ -26,6 +26,7 @@ export default async function authMiddleware(
         message: 'unauthorized',
       });
     }
+    req.body.user = user;
   }
 
   return next();

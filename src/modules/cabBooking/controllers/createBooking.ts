@@ -26,21 +26,21 @@ export default async function createBooking(
   const tripPrice = Math.ceil(15 * dist);
   const radius = 10 / 3963.2;
 
-  const cabs: mongoose.Types.ObjectId = await Cab.find({
+  const cabs = await Cab.find({
     booked: false,
     location: {
       $geoWithin: {
         $centerSphere: [[locationA[0], locationA[1]], radius],
       },
     },
-  }).get('_id');
+  });
   console.log(cabs);
   const cabBook = await CabBooking.create({
     pickupAddress,
     dropAddress,
     tripPrice,
     bookingConfirm: true,
-    createdBy: userId,
+    createdBy: req.body.user.id,
   });
   res.status(200).json({
     status: 'success',

@@ -6,7 +6,7 @@ export default async function deleteBooking(
   req: Request,
   res: Response
 ): Promise<Response | void> {
-  const { userId, bookingId } = req.body;
+  const { bookingId } = req.body;
   const id = await CabBooking.findOne({ _id: bookingId });
   if (!id) {
     return res.status(404).json({
@@ -15,7 +15,7 @@ export default async function deleteBooking(
     });
   }
   const reqs = await CabBooking.findByIdAndDelete({
-    createdBy: userId,
+    createdBy: req.body.user.id,
     _id: bookingId,
   });
 

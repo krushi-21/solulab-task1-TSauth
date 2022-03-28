@@ -5,7 +5,6 @@ export default async function getNearbyCab(
   req: Request,
   res: Response
 ): Promise<Response | void> {
-  console.log(req.body);
   const { lat, long } = req.body;
   if (!lat || !long) {
     return res.status(400).json({
