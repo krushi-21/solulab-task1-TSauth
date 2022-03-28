@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import getAllCabRequset from '../controllers/getAllReq';
 import registerCab from '../controllers/registerCab';
-import { catchAsync } from 'utils/catchAsync';
+import { catchAsync } from '../../../utils/catchAsync';
 //configure express router
 const router = Router();
 

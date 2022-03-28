@@ -2,13 +2,17 @@ import { createToken } from '../../../utils/token';
 import { Request, Response } from 'express';
 import User from '../../../models/user';
 import { authSchema } from '../../../helpers/validationSchema';
+import Joi from 'joi';
 
 export default async function Login(
   req: Request,
   res: Response
 ): Promise<Response | void> {
-  console.log('hello');
-  const result = await authSchema.validateAsync(req.body);
+  const result = await authSchema.validateAsync({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
   //check if user exist
   const user = await User.findOne({ email: result.email });
   if (!user) {

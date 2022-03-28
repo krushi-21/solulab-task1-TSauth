@@ -8,15 +8,19 @@ export default async function Register(
   res: Response
 ): Promise<Response | void> {
   //get user data
-  console.log('hello');
-  const { role } = req.body;
-  const result: any = authSchema.validate(req.body.email, req.body.password);
 
+  const { role } = req.body;
+
+  const result = await authSchema.validateAsync({
+    email: req.body.email,
+    password: req.body.password,
+  });
+  console.log(result.errors());
   //check user is already exist or not
   const user = await User.findOne({ email: result.email });
   if (user) {
     return res.status(409).json({
-      status: 409,
+      status: 'fail',
       message: 'User already register with this email',
     });
   }

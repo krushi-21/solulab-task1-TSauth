@@ -6,7 +6,7 @@ import ResetPassword, {
   ResetPasswordWithToken,
 } from '../controllers/resetPassword';
 import ForgotPassword from '../controllers/forgotPassword';
-import { catchAsync } from 'utils/catchAsync';
+import { catchAsync } from '../../../utils/catchAsync';
 
 //configure express router
 const router = Router();
