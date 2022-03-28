@@ -7,6 +7,7 @@ export default async function Login(
   req: Request,
   res: Response
 ): Promise<Response | void> {
+  console.log('hello');
   const result = await authSchema.validateAsync(req.body);
   //check if user exist
   const user = await User.findOne({ email: result.email });

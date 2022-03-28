@@ -8,7 +8,7 @@ export default async function Register(
   res: Response
 ): Promise<Response | void> {
   //get user data
-
+  console.log('hello');
   const { role } = req.body;
   const result: any = authSchema.validate(req.body.email, req.body.password);
 
