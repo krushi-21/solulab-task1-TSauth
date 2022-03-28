@@ -8,7 +8,11 @@ export default async function restrictTo(
 ) {
   const { user } = req.body;
   if (!roles.includes(user.role)) {
-    res.status(404).send('You dont have permission');
+    return res.status(403).json({
+      status: 'fail',
+      statusCode: 403,
+      message: 'You dont have permission',
+    });
   }
   return next();
 }

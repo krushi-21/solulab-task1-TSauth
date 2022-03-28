@@ -17,5 +17,8 @@ export default async function checkPastBooking(
   const reqs = await CabBooking.find({ createdBy: userId })
     .skip(skip)
     .limit(limit);
-  res.json(reqs);
+  return res.status(200).json({
+    status: 'success',
+    data: reqs,
+  });
 }

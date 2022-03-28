@@ -12,11 +12,19 @@ export default async function authMiddleware(
   if (authHeader && authHeader.startsWith('Bearer')) {
     const token = authHeader.split(' ')[1];
     if (!token) {
-      res.status(404).send('unauthorized');
+      return res.status(401).json({
+        status: 'fail',
+        statusCode: 401,
+        message: 'unauthorized',
+      });
     }
     const user = await verifyToken(token);
     if (!user) {
-      res.status(404).send('unauthenticated');
+      return res.status(401).json({
+        status: 'fail',
+        statusCode: 401,
+        message: 'unauthorized',
+      });
     }
   }
 

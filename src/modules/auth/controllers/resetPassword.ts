@@ -9,25 +9,25 @@ export default async function ResetPassword(
   req: Request,
   res: Response
 ): Promise<Response | void> {
-  try {
-    //get user data
-    const { email, password, newPassword } = req.body;
-    //find user by email
-    const user = await User.findOne({ email });
-    if (!user) {
-      res.status(404).end('User not found please register');
-      return;
-    }
-    //check given password is valid or not
-    if (await user.isValidPassword(password)) {
-      //change password with new given password
-      user.password = req.body.newPassword;
-      await user.save();
-      res.status(200).send('password updated');
-      return;
-    }
-  } catch (error) {
-    console.log(error);
+  //get user data
+  const { email, password, newPassword } = req.body;
+  //find user by email
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'User not found please register',
+    });
+  }
+  //check given password is valid or not
+  if (await user.isValidPassword(password)) {
+    //change password with new given password
+    user.password = req.body.newPassword;
+    await user.save();
+    return res.status(200).json({
+      status: 'success',
+      message: 'password updated',
+    });
   }
 }
 
@@ -49,8 +49,10 @@ export async function ResetPasswordWithToken(
     passwordResetExpiresIn: { $gt: Date.now() },
   });
   if (!user) {
-    res.status(404).end('User not found please register');
-    return;
+    return res.status(404).json({
+      status: 'fail',
+      message: 'User not found please register',
+    });
   }
   //update the password
   user.password = req.body.newPassword;
@@ -59,10 +61,11 @@ export async function ResetPasswordWithToken(
   user.passwordResetToken = undefined;
   user.passwordResetExpiresIn = undefined;
   await user.save();
-  console.log('password updated');
 
   //login in user with JWT
   const accessToken = createToken(user._id);
-  res.status(200).send(accessToken);
-  return;
+  return res.status(200).json({
+    message: 'success',
+    accessToken,
+  });
 }

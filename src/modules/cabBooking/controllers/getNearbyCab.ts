@@ -8,7 +8,10 @@ export default async function getNearbyCab(
   console.log(req.body);
   const { lat, long } = req.body;
   if (!lat || !long) {
-    res.status(404).send('please provide latitude and longitude');
+    return res.status(400).json({
+      status: 'fail',
+      message: 'please provide latitude and longitude',
+    });
   }
 
   //10miles
@@ -24,11 +27,13 @@ export default async function getNearbyCab(
   });
 
   if (cabs.length === 0) {
-    res.status(200).send('no cabs available at your destination');
-    return;
+    return res.status(404).json({
+      status: 'fail',
+      message: 'no cabs available at your destination',
+    });
   }
-  res.status(200).json({
-    message: 'succes',
+  return res.status(200).json({
+    status: 'succes',
     data: cabs,
   });
 }
