@@ -38,35 +38,31 @@ export async function ResetPasswordWithToken(
   req: Request,
   res: Response
 ): Promise<Response | void> {
-  try {
-    //decrypt token from user
-    const hashedToken = crypto
-      .createHash('sha256')
-      .update(req.params.token)
-      .digest('hex');
-    //find user by given token
-    const user = await User.findOne({
-      passwordResetToken: hashedToken,
-      passwordResetExpiresIn: { $gt: Date.now() },
-    });
-    if (!user) {
-      res.status(404).end('User not found please register');
-      return;
-    }
-    //update the password
-    user.password = req.body.newPassword;
-
-    //deleting reset token and expire time
-    user.passwordResetToken = undefined;
-    user.passwordResetExpiresIn = undefined;
-    await user.save();
-    console.log('password updated');
-
-    //login in user with JWT
-    const accessToken = createToken(user._id);
-    res.status(200).send(accessToken);
+  //decrypt token from user
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+  //find user by given token
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpiresIn: { $gt: Date.now() },
+  });
+  if (!user) {
+    res.status(404).end('User not found please register');
     return;
-  } catch (error) {
-    console.log(error);
   }
+  //update the password
+  user.password = req.body.newPassword;
+
+  //deleting reset token and expire time
+  user.passwordResetToken = undefined;
+  user.passwordResetExpiresIn = undefined;
+  await user.save();
+  console.log('password updated');
+
+  //login in user with JWT
+  const accessToken = createToken(user._id);
+  res.status(200).send(accessToken);
+  return;
 }

@@ -1,5 +1,5 @@
 import express, { application, Request, Response } from 'express';
-import { connect } from 'mongoose';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
@@ -39,7 +39,7 @@ class App {
   private async connectDB(): Promise<void> {
     const MONGO_PATH = process.env.MONGO_PATH || '';
 
-    await connect(MONGO_PATH).then(() => console.log('DB connected'));
+    await mongoose.connect(MONGO_PATH).then(() => console.log('DB connected'));
   }
 
   //register all the routes
