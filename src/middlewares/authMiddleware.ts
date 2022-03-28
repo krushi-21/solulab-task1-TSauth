@@ -7,18 +7,18 @@ export default async function authMiddleware(
   next: NextFunction
 ): Promise<Response | void> {
   let token;
-  try {
-    const authHeader = req.get('authorization');
-    if (authHeader && authHeader.startsWith('Bearer')) {
-      const token = authHeader.split(' ')[1];
-      if (!token) {
-        res.status(404).send('unauthorized');
-      }
-      const user = await verifyToken(token);
-      if (!user) {
-        res.status(404).send('unauthenticated');
-      }
+
+  const authHeader = req.get('authorization');
+  if (authHeader && authHeader.startsWith('Bearer')) {
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      res.status(404).send('unauthorized');
     }
-  } catch (error) {}
+    const user = await verifyToken(token);
+    if (!user) {
+      res.status(404).send('unauthenticated');
+    }
+  }
+
   return next();
 }

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/launcher.js",
+    "dev2": "npx nodemon ./build/server.js",
     "dev": "tsc-watch --onSuccess \"node ./build/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
