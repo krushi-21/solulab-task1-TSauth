@@ -12,7 +12,7 @@ export function catchAsync(fn: CallableFunction) {
           message: err.message,
         });
       }
-
+      console.log(err);
       return res
         .status(500)
         .send({ message: 'Internal Server Error.', data: [] });

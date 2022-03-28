@@ -15,7 +15,7 @@ export default async function Register(
     email: req.body.email,
     password: req.body.password,
   });
-  console.log(result.errors());
+
   //check user is already exist or not
   const user = await User.findOne({ email: result.email });
   if (user) {
