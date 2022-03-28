@@ -10,17 +10,23 @@ export default async function Login(
   //check if user exist
   const user = await User.findOne({ email });
   if (!user) {
-    res.status(404).end('User not found please register');
-    return;
+    return res.status(404).end({
+      status: 'fail',
+      message: 'User not found please register',
+    });
   }
   //check password is matching
   if (await user.isValidPassword(password)) {
     //assign new JWT token
     const accessToken = createToken(user._id);
-    res.status(200).send(accessToken);
-    return;
+    return res.status(200).json({
+      status: 'success',
+      accessToken,
+    });
   } else {
-    res.status(400).send('user credentials not matching');
-    return;
+    return res.status(400).json({
+      status: 'fail',
+      message: 'user credentials not matching',
+    });
   }
 }

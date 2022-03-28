@@ -8,5 +8,8 @@ export default async function getAllCabRequset(req: Request, res: Response) {
   const skip = (page - 1) * limit;
 
   const reqs = await CabBooking.find({}).skip(skip).limit(limit);
-  res.json(reqs);
+  res.send(200).json({
+    status: 'success',
+    data: reqs,
+  });
 }

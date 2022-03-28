@@ -9,16 +9,17 @@ export default async function deleteBooking(
   const { userId, bookingId } = req.body;
   const id = await CabBooking.findOne({ _id: bookingId });
   if (!id) {
-    res.status(404).end('booking id is not valid');
-    return;
+    return res.status(404).json({
+      status: 'fail',
+      message: 'booking id is not valid',
+    });
   }
   const reqs = await CabBooking.findByIdAndDelete({
     createdBy: userId,
     _id: bookingId,
   });
 
-  res.status(200).send('success');
-
-  res.status(404).send('unable to delete current booking');
-  console.log('unable to delete current booking');
+  return res.status(200).json({
+    message: 'success',
+  });
 }

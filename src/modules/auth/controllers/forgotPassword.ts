@@ -10,8 +10,10 @@ export default async function ForgotPassword(
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    res.status(404).end('User not found please register');
-    return;
+    return res.status(404).json({
+      staus: 'fail',
+      message: 'User not found please register',
+    });
   }
   //create new reset password token
   const resetToken = user.createPasswordResetToken();
@@ -19,6 +21,8 @@ export default async function ForgotPassword(
   console.log(resetToken);
   //save token in DB
   await user.save();
-  res.status(200).send('reset token has sent to your email');
-  return;
+  return res.status(202).json({
+    status: 'success',
+    message: 'reset token has sent to your email',
+  });
 }

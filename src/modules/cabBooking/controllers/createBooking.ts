@@ -42,5 +42,8 @@ export default async function createBooking(
     bookingConfirm: true,
     createdBy: userId,
   });
-  res.status(200).send(cabBook);
+  res.status(200).json({
+    status: 'success',
+    data: cabBook,
+  });
 }
