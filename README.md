@@ -20,3 +20,4 @@ $  npm run dev
 ```
 
 ## Open Postman and test the connectivities.
+post man documentation https://documenter.getpostman.com/view/11760552/UVyoWdKd
