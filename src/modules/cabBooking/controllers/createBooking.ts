@@ -11,7 +11,6 @@ export default async function createBooking(
 ): Promise<Response | void> {
   const pickupAddress = req.body.pickupAddress;
   const dropAddress = req.body.dropAddress;
-  const userId = req.body.userId;
 
   const locationA = pickupAddress.coordinates.toString().split(',');
   const locationB = dropAddress.coordinates.toString().split(',');
@@ -24,9 +23,11 @@ export default async function createBooking(
   );
   console.log(dist);
   const tripPrice = Math.ceil(15 * dist);
+
+  //for 10miles
   const radius = 10 / 3963.2;
 
-  const cabs = await Cab.find({
+  const cabs: any = await Cab.find({
     booked: false,
     location: {
       $geoWithin: {
@@ -34,16 +35,27 @@ export default async function createBooking(
       },
     },
   });
-  console.log(cabs);
-  const cabBook = await CabBooking.create({
+  if (cabs.length === 0) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'no cabs available at your destination',
+    });
+  }
+  console.log(cabs[0]._id);
+  const cabBooking = new CabBooking({
     pickupAddress,
     dropAddress,
     tripPrice,
     bookingConfirm: true,
     createdBy: req.body.user.id,
+    cab: cabs[0]._id,
   });
+  await Cab.findByIdAndUpdate(cabs[0]._id, { booked: true });
+
+  await cabBooking.save();
   res.status(200).json({
     status: 'success',
-    data: cabBook,
+    message: 'Cab booking is successfull',
+    data: cabBooking,
   });
 }

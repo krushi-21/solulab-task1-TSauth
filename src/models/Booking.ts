@@ -1,5 +1,4 @@
 import mongoose, { Schema, model } from 'mongoose';
-import User from './user';
 
 const CabBookingSchema = new Schema(
   {
@@ -41,14 +40,6 @@ const CabBookingSchema = new Schema(
   },
   { timestamps: true }
 );
-// CabBookingSchema.pre(/^find/, function (next) {
-//   this.User.populate('User').populate({
-//     path: 'Cab',
-//     strictPopulate: false,
-//   });
-
-//   next();
-// });
 
 CabBookingSchema.index({ pickupAddress: '2d', dropAddress: '2d' });
 export default model('CabBooking', CabBookingSchema);
