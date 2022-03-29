@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authRouter } from './auth/routes';
 import { cabBookingRouter } from './cabBooking/routes';
-import authMiddleware from '../middlewares/authMiddleware';
+
 import { cabOwnerRouter } from './cab/routes';
 
 const router = Router();
