@@ -10,7 +10,7 @@ const router = Router();
 
 //adding all routes
 router.post('/createBooking', authMiddleware, catchAsync(createBooking));
-router.delete('/deleteBooking', authMiddleware, catchAsync(deleteBooking));
+router.delete('/deleteBooking/:id', authMiddleware, catchAsync(deleteBooking));
 router.get('/pastBooking', authMiddleware, catchAsync(checkPastBooking));
 router.get('/getNearbyCab', authMiddleware, catchAsync(getNearbyCab));
 
