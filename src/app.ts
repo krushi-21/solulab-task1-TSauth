@@ -4,6 +4,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 import { AppRoutes } from './modules/routes';
+import swaggerDocs from '../src/utils/swagger';
+import swaggerUi from 'swagger-ui-express';
 import 'dotenv/config';
 
 class App {
@@ -30,6 +32,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }
+
   //Configuration
   private config(): void {
     this.app.disable('x-powered-by');
@@ -50,7 +53,9 @@ class App {
       windowMs: 60 * 60 * 1000,
       message: 'to many request from this ip',
     });
+
     this.app.use('/api/v1', limiter, AppRoutes);
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
     //this will return 404 route
     this.app.use((req: Request, res: Response) => {
