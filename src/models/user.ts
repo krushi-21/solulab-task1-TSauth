@@ -16,11 +16,7 @@ const UserSchema = new Schema(
       select: false,
       required: [true, 'please tell us your password'],
     },
-    role: {
-      type: String,
-      enum: ['USER', 'CAB'],
-      default: 'USER',
-    },
+
     passwordResetToken: String,
     passwordResetExpiresIn: Date,
   },

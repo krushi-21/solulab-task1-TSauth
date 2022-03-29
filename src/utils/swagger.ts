@@ -318,6 +318,5 @@ const swaggerOptions: swaggerjsdoc.Options = {
   apis: ['./modules/routes.ts'],
 };
 const swaggerDocs = swaggerjsdoc(swaggerOptions);
-console.log(swaggerDocs);
 
 export default swaggerDocs;
