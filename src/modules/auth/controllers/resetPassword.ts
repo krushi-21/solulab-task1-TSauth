@@ -3,35 +3,6 @@ import crypto from 'crypto';
 import User from '../../../models/user';
 import { createToken } from '../../../utils/token';
 
-//TODO: CREATE RESET PASSWORD WITH MAIL
-
-export default async function ResetPassword(
-  req: Request,
-  res: Response
-): Promise<Response | void> {
-  //get user data
-  const { email, password, newPassword } = req.body;
-  //find user by email
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'User not found please register',
-    });
-  }
-  //check given password is valid or not
-  if (await user.isValidPassword(password)) {
-    //change password with new given password
-    user.password = req.body.newPassword;
-    await user.save();
-    return res.status(200).json({
-      status: 'success',
-      message: 'password updated',
-    });
-  }
-}
-
-//Reset password function for mail
 //user can reset password using given link
 
 export async function ResetPasswordWithToken(
